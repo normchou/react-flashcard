@@ -2,4 +2,4 @@
 
 Flashcard app build with React, Redux, Firebase, and styled with Material Design.
 
-Visit [here](https://react-flashcard.herokuapp.com/).
+To see app, click <a href="https://react-flashcard.herokuapp.com/" target="_blank">here</a>.
