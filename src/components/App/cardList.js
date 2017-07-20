@@ -1,6 +1,5 @@
 import React from 'react';
-import { map } from 'lodash';
-import { Card, Button, Icon } from 'react-materialize';
+import { Icon } from 'react-materialize';
 
 const container = {
   display: 'flex',
@@ -40,8 +39,8 @@ export default class CardList extends React.Component {
   }
 
   render() {
-    const { currentCard, totalCards } = this.props;
-    const { question, answer } = this.props.cards;
+    const { currentCard, totalCards, cards } = this.props;
+    const { question, answer } = cards;
     let text = this.state.showQuestion ? question : answer;
 
     return (
@@ -57,6 +56,11 @@ export default class CardList extends React.Component {
           </div>
           <div>
             <p style={{fontSize: 30, textAlign: 'center'}}>{text}</p>
+          </div>
+          <div
+            onClick={this.props.onRemoveCard.bind(this, cards.id)}
+            style={{position: 'absolute', bottom: 10, right: 10, cursor: 'pointer'}}>
+            <Icon>clear</Icon>
           </div>
         </div>
       </div>

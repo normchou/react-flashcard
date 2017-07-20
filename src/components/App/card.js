@@ -32,7 +32,13 @@ class ShowCards extends Component {
 			this.props.params.id,
 			cardQuestion,
 			cardAnswer
-		);
+		)
+
+		if (this.state.currentCard < 0) {
+			this.setState({
+				currentCard: 0
+			});
+		}
 
 		refQuestion.value = '';
 		refAnswer.value = '';
@@ -40,6 +46,12 @@ class ShowCards extends Component {
 
 	onCardRemove = (cardId) => {
 		this.props.removeCardItem(this.props.deck.id, cardId);
+
+		if (this.state.currentCard > 0) {
+			this.setState({
+				currentCard: this.state.currentCard - 1
+			})
+		}
 	}
 
 	onHomeClick = () => {
@@ -68,7 +80,6 @@ class ShowCards extends Component {
 				bottomSheet
 				trigger={
 					<Button
-						medium
 						style={{backgroundColor: backgroundColor}}
 						floating waves='light'><Icon>add</Icon></Button>
 				}>
@@ -105,20 +116,21 @@ class ShowCards extends Component {
 
 	mayRenderCardList() {
 		const { cards } = this.props.deck;
+		const { currentCard } = this.state;
 
 		if (isUndefined(cards)) {
 			return null;
 		}
 
-		const currentCard = this.state.currentCard + 1;
+		const currentCardCount = currentCard + 1;
 		const totalCards = cards.length;
 
 		return (
 			<div>
 				<CardList
-					currentCard={currentCard}
+					currentCard={currentCardCount}
 					totalCards={totalCards}
-					cards={this.props.deck.cards[this.state.currentCard]}
+					cards={cards[currentCard]}
 					onRemoveCard={this.onCardRemove} />
 				<Button
 					large

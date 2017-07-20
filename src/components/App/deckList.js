@@ -1,6 +1,6 @@
 import { map } from 'lodash';
 import React from 'react';
-import { Row, Card, Button, Icon } from 'react-materialize';
+import { Icon } from 'react-materialize';
 
 const cardContainer = {
 	boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
