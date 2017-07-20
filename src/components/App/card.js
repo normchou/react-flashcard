@@ -13,11 +13,13 @@ class ShowCards extends Component {
 		super(props);
 
 		this.state = {
-			currentCard: 0
+			currentCard: 0,
+			showQuestion: true
 		}
 
 		this.mayRenderCardList = this.mayRenderCardList.bind(this);
 		this.updateCard = this.updateCard.bind(this);
+		this.toggleQuestion = this.toggleQuestion.bind(this);
 	}
 
 	onSubmit = (e) => {
@@ -110,13 +112,20 @@ class ShowCards extends Component {
 		if (nextCard === totalCard) nextCard = 0;
 
 		this.setState({
-			currentCard: nextCard
+			currentCard: nextCard,
+			showQuestion: true
 		});
 	}
 
+	toggleQuestion() {
+    this.setState({
+      showQuestion: !this.state.showQuestion
+    })
+  }
+
 	mayRenderCardList() {
 		const { cards } = this.props.deck;
-		const { currentCard } = this.state;
+		const { currentCard, showQuestion } = this.state;
 
 		if (isUndefined(cards)) {
 			return null;
@@ -128,6 +137,8 @@ class ShowCards extends Component {
 		return (
 			<div>
 				<CardList
+					showQuestion={showQuestion}
+					toggleQuestion={this.toggleQuestion}
 					currentCard={currentCardCount}
 					totalCards={totalCards}
 					cards={cards[currentCard]}

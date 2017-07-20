@@ -21,49 +21,33 @@ const cardContainer = {
   padding: 20
 }
 
-export default class CardList extends React.Component {
-  constructor(props) {
-    super(props);
+export default function CardList(props) {
+  const { currentCard, totalCards, cards, showQuestion, toggleQuestion, onRemoveCard } = props;
+  const { question, answer } = cards;
+  let text = showQuestion ? 
+    (<p style={{fontSize: 20, textAlign: 'center', color: '#251351'}}>{question}</p>) : 
+    (<p style={{fontSize: 20, textAlign: 'center', color: '#40798C'}}>{answer}</p>);
 
-    this.state = {
-      showQuestion: true
-    }
-
-    this.toggleQuestion = this.toggleQuestion.bind(this);
-  }
-
-  toggleQuestion() {
-    this.setState({
-      showQuestion: !this.state.showQuestion
-    })
-  }
-
-  render() {
-    const { currentCard, totalCards, cards } = this.props;
-    const { question, answer } = cards;
-    let text = this.state.showQuestion ? question : answer;
-
-    return (
-      <div style={container}>
-        <div style={cardContainer}>
-          <div style={{position: 'absolute', top: 10, left: 10}}>
-            <p style={{margin: 0}}>{currentCard} / {totalCards}</p>
-          </div>
-          <div
-            onClick={this.toggleQuestion}
-            style={{position: 'absolute', top: 10, right: 10, cursor: 'pointer'}}>
-            <Icon>replay</Icon>
-          </div>
-          <div>
-            <p style={{fontSize: 30, textAlign: 'center'}}>{text}</p>
-          </div>
-          <div
-            onClick={this.props.onRemoveCard.bind(this, cards.id)}
-            style={{position: 'absolute', bottom: 10, right: 10, cursor: 'pointer'}}>
-            <Icon>clear</Icon>
-          </div>
+  return (
+    <div style={container}>
+      <div style={cardContainer}>
+        <div style={{position: 'absolute', top: 10, left: 10}}>
+          <p style={{margin: 0}}>{currentCard} / {totalCards}</p>
+        </div>
+        <div
+          onClick={toggleQuestion}
+          style={{position: 'absolute', top: 10, right: 10, cursor: 'pointer'}}>
+          <Icon>replay</Icon>
+        </div>
+        <div style={{ overflow: 'scroll'}}>
+          {text}
+        </div>
+        <div
+          onClick={onRemoveCard.bind(this, cards.id)}
+          style={{position: 'absolute', bottom: 10, right: 10, cursor: 'pointer'}}>
+          <Icon>clear</Icon>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
