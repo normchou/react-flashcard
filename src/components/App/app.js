@@ -4,6 +4,20 @@ import { connect } from 'react-redux';
 import { loadDecks, createDeck, loadSpecificDeck, removeSpecificDeck } from '../../actions';
 import { Button, Icon, Row, Modal } from 'react-materialize';
 
+const cardContainer = {
+	boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+	width: 210,
+	height: 210,
+	marginBottom: 18,
+	position: 'relative',
+	backgroundColor: '#F7FFF7',
+	display: 'flex',
+	flexDirection: 'column',
+	justifyContent: 'center',
+	alignItems: 'center',
+	cursor: 'pointer'
+}
+
 class App extends Component {
 	componentDidMount() {
 		this.props.loadDecks();
@@ -26,13 +40,17 @@ class App extends Component {
 		this.props.removeSpecificDeck(deckId);
 	}
 
+	onAddNewCard = () => {
+
+	}
+
 	renderModal() {
 		return (
 			<Modal
 				header=""
 				bottomSheet
 				trigger={
-					<Button waves='light'>Add New<Icon left>add</Icon></Button>
+					<div style={cardContainer}><Icon medium>add</Icon></div>
 				}>
 				<Row>
 					<form onSubmit={this.onSubmit}>
@@ -53,19 +71,20 @@ class App extends Component {
 		return (
 			<div>
 				<div className="navbar-fixed">
-				    <nav className="nav-extended">
+				    <nav className="nav-extended" style={{backgroundColor: '#031A6B'}}>
 				    	<div className="nav-wrapper">
 				        	<span className="brand-logo center">Flashcards</span>
 				      	</div>
 				    </nav>
 			  	</div>
 			  	<div className="container">
-					{this.renderModal()}
 				</div>
 				<DeckList
 					decks={this.props.decks}
 					onClick={this.onDeckClick}
-					onRemove={this.onDeckRemove} />
+					onRemove={this.onDeckRemove}>
+					{this.renderModal()}
+				</DeckList>
 			</div>
 		);
 	}
