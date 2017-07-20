@@ -1,11 +1,25 @@
 import React, { Component } from 'react';
+import { isUndefined } from 'lodash';
 import CardList from './cardList';
 import { getDeckById } from '../../reducers'
 import { connect } from 'react-redux';
 import { createCardItem, removeCardItem } from '../../actions';
 import { Button, Icon, Row, Modal } from 'react-materialize';
 
+const backgroundColor = '#031A6B'
+
 class ShowCards extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			currentCard: 0
+		}
+
+		this.mayRenderCardList = this.mayRenderCardList.bind(this);
+		this.updateCard = this.updateCard.bind(this);
+	}
+
 	onSubmit = (e) => {
 		e.preventDefault();
 
@@ -35,10 +49,10 @@ class ShowCards extends Component {
 	renderCardNav() {
 		return (
 			<div className="navbar-fixed">
-			    <nav className="nav-extended">
+			    <nav className="nav-extended" style={{backgroundColor: backgroundColor}}>
 			    	<div className="nav-wrapper">
 			        	<div style={{paddingLeft: '18px', cursor: 'pointer'}} className="left" onClick={this.onHomeClick}>
-			        		<i className="material-icons">home</i>	
+			        		<Icon large>keyboard_arrow_left</Icon>	
 			        	</div>
 			        	<span className="brand-logo center">{this.props.deck.name}</span>
 			      	</div>
@@ -53,7 +67,10 @@ class ShowCards extends Component {
 				header=""
 				bottomSheet
 				trigger={
-					<Button waves='light'>Add New<Icon left>add</Icon></Button>
+					<Button
+						medium
+						style={{backgroundColor: backgroundColor}}
+						floating waves='light'><Icon>add</Icon></Button>
 				}>
 				<Row>
 					<form onSubmit={this.onSubmit}>
@@ -74,14 +91,55 @@ class ShowCards extends Component {
 		)
 	}
 
-	render() {
+	updateCard() {
+		const totalCard = this.props.deck.cards.length;
+		const currentCard = this.state.currentCard;
+		let nextCard = currentCard + 1
+
+		if (nextCard === totalCard) nextCard = 0;
+
+		this.setState({
+			currentCard: nextCard
+		});
+	}
+
+	mayRenderCardList() {
+		const { cards } = this.props.deck;
+
+		if (isUndefined(cards)) {
+			return null;
+		}
+
+		const currentCard = this.state.currentCard + 1;
+		const totalCards = cards.length;
+
 		return (
 			<div>
+				<CardList
+					currentCard={currentCard}
+					totalCards={totalCards}
+					cards={this.props.deck.cards[this.state.currentCard]}
+					onRemoveCard={this.onCardRemove} />
+				<Button
+					large
+					waves="light"
+					style={{ marginTop: 30, marginLeft: '50%', transform: 'translateX(-48px)', backgroundColor: backgroundColor }}
+					onClick={this.updateCard}>Next</Button>
+			</div>
+		)
+
+	}
+
+	render() {
+		return (
+			<div style={{position: 'relative', minHeight: '100vh'}}>
 				{this.renderCardNav()}
-				<div className="container">
+				<div style={{marginTop: 30}}>
+					{this.mayRenderCardList()}
+				</div>
+				<div style={{position: 'absolute', bottom: 20, right: 20}}>
 					{this.renderModal()}
 				</div>
-				<CardList cards={this.props.deck.cards} onRemoveCard={this.onCardRemove} />
 			</div>
 		);
 	}
