@@ -5,7 +5,7 @@ import { loadDecks, createDeck, loadSpecificDeck, removeSpecificDeck } from '../
 import { Button, Icon, Row, Modal } from 'react-materialize';
 
 const cardContainer = {
-	boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+	boxShadow: '0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19)',
 	width: 210,
 	height: 210,
 	marginBottom: 18,
@@ -40,17 +40,13 @@ class App extends Component {
 		this.props.removeSpecificDeck(deckId);
 	}
 
-	onAddNewCard = () => {
-
-	}
-
 	renderModal() {
 		return (
 			<Modal
 				header=""
 				bottomSheet
 				trigger={
-					<div style={cardContainer}><Icon medium>add</Icon></div>
+					<div className="flashcard" style={cardContainer}><Icon medium>add</Icon></div>
 				}>
 				<Row>
 					<form onSubmit={this.onSubmit}>
